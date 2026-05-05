@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relevamiento de comercios 2026 — CEM Esquina</title>
+  <meta name="description" content="Formulario de relevamiento de comercios habilitados y no habilitados 2026. Centro Estadístico Municipal, Municipalidad de Esquina, Corrientes.">
+  <meta name="theme-color" content="#073868">
+  <!-- PWA básico para instalación en celular -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CEM Relevamiento">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul-50:  #e8eef5;
+      --azul-100: #c5d5e9;
+      --azul-200: #9cb7d8;
+      --azul-300: #6e96c5;
+      --azul-400: #447db5;
+      --azul-500: #1a64a4;
+      --azul-600: #0e5a9e;
+      --azul-700: #0a4a84;
+      --azul-800: #073868;
+      --azul-900: #042549;
+      --ocre-300: #d4aa6a;
+      --ocre-400: #c99848;
+      --ocre-500: #b8863d;
+      --ocre-600: #9e6f2a;
+      --papel:    #f8f5ee;
+      --papel-2:  #eee6d5;
+      --tinta:    #171614;
+      --n-200:    #d8d3ca;
+      --n-300:    #c0b8ac;
+      --n-500:    #8a8277;
+      --n-700:    #4a453e;
+      --verde:    #2f7d32;
+      --rojo:     #a8322c;
+      --amarillo: #c9971a;
+      --shadow-1: 0 1px 2px rgba(15,23,42,.04), 0 1px 1px rgba(15,23,42,.06);
+      --shadow-2: 0 4px 12px rgba(15,23,42,.08);
+      --r-sm: 4px;
+      --r-md: 8px;
+      --r-pill: 999px;
+      --font-sans:  'IBM Plex Sans', system-ui, sans-serif;
+      --font-serif: 'IBM Plex Serif', Georgia, serif;
+      --font-mono:  'IBM Plex Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--papel);
+      color: var(--tinta);
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .cem-header {
+      background: var(--azul-800);
+      padding: 0 24px;
+      display: flex;
+      align-items: stretch;
+      min-height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow: hidden;
+    }
+    .cem-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        135deg, transparent, transparent 18px,
+        rgba(184,134,61,.07) 18px, rgba(184,134,61,.07) 19px
+      );
+      pointer-events: none;
+    }
+    .cem-header-inner {
+      display: flex; align-items: center; gap: 14px;
+      flex: 1; padding: 13px 0; position: relative;
+      max-width: 720px;
+    }
+    .cem-mark {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: var(--azul-600);
+      border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid rgba(184,134,61,.4);
+    }
+    .cem-mark svg { width: 20px; height: 20px; color: white; }
+    .cem-header-title {
+      font-family: var(--font-sans);
+      font-weight: 700; font-size: 15px;
+      color: white; letter-spacing: .01em; line-height: 1.2;
+    }
+    .cem-header-sub {
+      font-size: 11px; color: var(--azul-200);
+      margin-top: 2px; font-weight: 400;
+    }
+    .cem-header-tag {
+      margin-left: auto;
+      background: rgba(184,134,61,.15);
+      border: 1px solid rgba(184,134,61,.35);
+      border-radius: var(--r-sm);
+      padding: 5px 11px;
+      font-size: 11px; font-weight: 600;
+      color: var(--ocre-300);
+      letter-spacing: .04em; white-space: nowrap;
+    }
+
+    /* ── TABS ── */
+    .cem-tabs {
+      background: var(--azul-900);
+      display: flex; padding: 0 24px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      position: sticky; top: 64px; z-index: 99;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cem-tabs::-webkit-scrollbar { display: none; }
+    .cem-tab {
+      padding: 12px 18px;
+      font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+      color: var(--azul-300); cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+      user-select: none; white-space: nowrap;
+    }
+    .cem-tab.on { color: white; border-bottom-color: var(--ocre-500); }
+    .cem-tab:hover:not(.on) { color: var(--azul-100); }
+
+    /* ── CONN BAR ── */
+    .cem-conn {
+      background: var(--azul-900);
+      padding: 6px 24px;
+      display: flex; align-items: center; gap: 7px;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+    .cem-conn-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--verde); flex-shrink: 0;
+      transition: background .3s;
+    }
+    .cem-conn-dot.err { background: var(--rojo); }
+    .cem-conn-dot.pend { background: var(--amarillo); animation: pulse .8s ease-in-out infinite alternate; }
+    @keyframes pulse { from { opacity: .5; } to { opacity: 1; } }
+    .cem-conn-txt { font-size: 11px; color: var(--azul-300); }
+    .cem-conn-txt strong { color: var(--azul-100); font-weight: 500; }
+
+    /* ── BODY ── */
+    .cem-body {
+      padding: 24px 24px 100px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ── ALERT ── */
+    .cem-alert {
+      background: var(--azul-50);
+      border-radius: var(--r-md);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: var(--azul-800);
+      border: 1px solid var(--azul-100);
+    }
+    .cem-alert strong { font-weight: 600; display: block; margin-bottom: 3px; }
+
+    /* ── CARD ── */
+    .cem-card {
+      background: white;
+      border: 1px solid var(--n-200);
+      border-radius: var(--r-md);
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-1);
+      overflow: hidden;
+    }
+    .cem-card-head {
+      padding: 11px 20px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid var(--n-200);
+      background: var(--papel);
+    }
+    .cem-card-head::after {
+      content: '';
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--ocre-500);
+      border-radius: 1px;
+      margin-left: auto;
+    }
+    .cem-card-num {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--n-500); font-weight: 500; letter-spacing: .03em;
+    }
+    .cem-card-title {
+      font-family: var(--font-sans); font-weight: 600;
+      font-size: 13px; color: var(--tinta); letter-spacing: .01em;
+    }
+    .cem-card-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── FIELDS ── */
+    .f { display: flex; flex-direction: column; gap: 5px; }
+    .f label { font-size: 12px; font-weight: 600; color: var(--n-700); letter-spacing: .02em; }
+    .f label .req { color: var(--rojo); margin-left: 1px; }
+    .f input[type=text], .f input[type=tel], .f input[type=date],
+    .f textarea, .f select {
+      font-family: var(--font-sans); font-size: 15px;
+      color: var(--tinta); background: var(--papel);
+      border: 1px solid var(--n-200); border-radius: var(--r-sm);
+      padding: 10px 12px; width: 100%;
+      transition: border-color .15s, background .15s, box-shadow .15s;
+      -webkit-appearance: none; appearance: none;
+    }
+    .f input:focus, .f select:focus, .f textarea:focus {
+      outline: none; border-color: var(--azul-600);
+      background: white;
+      box-shadow: 0 0 0 2px rgba(14,90,158,.12);
+    }
+    .f textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    .fmono input { font-family: var(--font-mono); font-size: 13px; letter-spacing: .03em; }
+    .hint { font-size: 11px; color: var(--n-500); margin-top: 1px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; gap: 10px; } }
+
+    /* ── TAGS ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      border: 1px solid var(--n-200); border-radius: var(--r-pill);
+      padding: 6px 14px;
+      font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+      color: var(--n-700); cursor: pointer; background: white;
+      transition: all .12s; user-select: none;
+    }
+    .tag:hover { border-color: var(--azul-600); color: var(--azul-600); }
+    .tag.on { background: var(--azul-600); border-color: var(--azul-600); color: white; font-weight: 600; }
+
+    /* ── ESTADO ── */
+    .estado-row { display: flex; gap: 8px; }
+    @media (max-width: 400px) { .estado-row { flex-direction: column; } }
+    .est-btn {
+      flex: 1; padding: 11px 8px;
+      border: 1px solid var(--n-200); border-radius: var(--r-sm);
+      background: white; cursor: pointer;
+      font-family: var(--font-sans); font-weight: 600; font-size: 13px;
+      color: var(--n-700); text-align: center;
+      transition: all .15s; user-select: none;
+    }
+    .est-btn:hover { border-color: var(--azul-400); color: var(--azul-700); }
+    .est-hab   { background: #edf7ed !important; border-color: var(--verde)    !important; color: var(--verde)    !important; }
+    .est-nohab { background: #fdf0ef !important; border-color: var(--rojo)     !important; color: var(--rojo)     !important; }
+    .est-nd    { background: #fdf8ec !important; border-color: var(--amarillo) !important; color: var(--amarillo) !important; }
+
+    /* ── RADIO/CHECK ── */
+    .opciones { display: flex; flex-direction: column; gap: 6px; }
+    .opcion {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 13px;
+      border: 1px solid var(--n-200); border-radius: var(--r-sm);
+      cursor: pointer; background: var(--papel);
+      transition: all .12s; font-size: 13px; color: var(--tinta);
+    }
+    .opcion:hover { background: var(--azul-50); border-color: var(--azul-400); }
+    .opcion input { accent-color: var(--azul-600); width: 15px; height: 15px; margin: 0; flex-shrink: 0; }
+
+    /* ── GPS ── */
+    .geo-row { display: flex; gap: 8px; align-items: flex-end; }
+    .geo-row .f { flex: 1; }
+    .gps-btn {
+      height: 42px; background: var(--azul-600); color: white;
+      border: none; border-radius: var(--r-sm); padding: 0 14px;
+      font-family: var(--font-sans); font-weight: 600; font-size: 12px;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      white-space: nowrap; transition: background .15s;
+    }
+    .gps-btn:hover { background: var(--azul-700); }
+
+    /* ── FOTO ── */
+    .foto-drop {
+      border: 1.5px dashed var(--n-200); border-radius: var(--r-md);
+      padding: 20px 16px; text-align: center;
+      cursor: pointer; background: var(--papel);
+      transition: all .15s;
+    }
+    .foto-drop:hover { border-color: var(--azul-500); background: var(--azul-50); }
+    .foto-drop p { font-size: 12px; color: var(--n-500); margin: 7px 0 0; }
+    .foto-drop strong { color: var(--azul-600); }
+    .foto-drop input { display: none; }
+    .foto-prevs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .foto-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: var(--r-sm); border: 1px solid var(--n-200); }
+
+    /* ── COND ── */
+    .cond { display: none; }
+    .cond.on { display: block; }
+
+    /* ── STICKY BAR ── */
+    .cem-bar {
+      background: white; border-top: 1px solid var(--n-200);
+      position: fixed; bottom: 0; left: 0; right: 0;
+      padding: 12px 24px; display: flex; gap: 10px;
+      box-shadow: 0 -2px 8px rgba(15,23,42,.06);
+      z-index: 98; max-width: 100%;
+    }
+    .btn-pri {
+      flex: 1; background: var(--azul-600); color: white;
+      border: none; border-radius: var(--r-sm);
+      padding: 13px 20px;
+      font-family: var(--font-sans); font-weight: 600; font-size: 14px;
+      cursor: pointer; transition: background .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-pri:hover { background: var(--azul-700); }
+    .btn-pri:disabled { background: var(--n-300); cursor: not-allowed; }
+    .btn-sec {
+      background: white; color: var(--n-700);
+      border: 1px solid var(--n-200); border-radius: var(--r-sm);
+      padding: 13px 18px;
+      font-family: var(--font-sans); font-weight: 500; font-size: 14px;
+      cursor: pointer; transition: all .15s;
+    }
+    .btn-sec:hover { background: var(--papel); border-color: var(--n-300); }
+    .spinner {
+      width: 15px; height: 15px;
+      border: 2px solid rgba(255,255,255,.3); border-top-color: white;
+      border-radius: 50%; animation: spin .7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TOAST ── */
+    .toast {
+      display: none; border-radius: var(--r-md);
+      padding: 14px 18px; margin-bottom: 16px;
+      font-size: 13px; border: 1px solid;
+      animation: fadeIn .2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    .toast.ok  { display: block; background: #edf7ed; border-color: #a5d6a7; color: #1b5e20; }
+    .toast.err { display: block; background: #fdf0ef; border-color: #ef9a9a; color: #6d1b1b; }
+    .toast h4  { font-weight: 600; margin-bottom: 3px; }
+
+    /* ── KPI ── */
+    .kpi-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+    .kpi {
+      background: white; border: 1px solid var(--n-200);
+      border-radius: var(--r-md); padding: 16px 14px;
+      text-align: center; box-shadow: var(--shadow-1);
+    }
+    .kpi-lbl { font-size: 11px; font-weight: 600; color: var(--n-500); letter-spacing: .04em; text-transform: uppercase; }
+    .kpi-val { font-family: var(--font-mono); font-size: 32px; font-weight: 500; color: var(--tinta); margin-top: 4px; font-feature-settings: 'tnum'; }
+    .kpi-val.v { color: var(--verde); }
+    .kpi-val.r { color: var(--rojo); }
+
+    /* ── LISTA ── */
+    .reg {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      padding: 11px 14px; border: 1px solid var(--n-200);
+      border-radius: var(--r-sm); margin-bottom: 6px;
+      background: white; box-shadow: var(--shadow-1);
+    }
+    .reg-nom { font-weight: 600; font-size: 13px; }
+    .reg-det { font-size: 11px; color: var(--n-500); margin-top: 2px; }
+    .badge {
+      font-family: var(--font-sans); font-weight: 600; font-size: 11px;
+      padding: 3px 10px; border-radius: var(--r-pill); white-space: nowrap;
+    }
+    .b-hab   { background: #edf7ed; color: var(--verde);    border: 1px solid #a5d6a7; }
+    .b-nohab { background: #fdf0ef; color: var(--rojo);     border: 1px solid #ef9a9a; }
+    .b-nd    { background: #fdf8ec; color: var(--amarillo); border: 1px solid #ffe082; }
+    .b-papel { background: var(--papel-2); color: var(--n-700); border: 1px solid var(--n-200); font-size: 10px; margin-left: 4px; }
+
+    .tab-content { display: none; }
+    .tab-content.on { display: block; }
+
+    /* ── FOOTER ── */
+    .cem-footer {
+      background: var(--azul-900); color: var(--azul-300);
+      font-size: 11px; text-align: center;
+      padding: 14px 24px; margin-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .cem-footer strong { color: var(--azul-200); font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="cem-header">
+    <div class="cem-header-inner">
+      <div class="cem-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cem-header-title">Relevamiento de comercios 2026</div>
+        <div class="cem-header-sub">Centro Estadístico Municipal · Municipalidad de Esquina, Corrientes</div>
+      </div>
+      <div class="cem-header-tag">Hab / No hab</div>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <nav class="cem-tabs">
+    <div class="cem-tab on"  onclick="tab('campo',this)">Relevamiento en campo</div>
+    <div class="cem-tab"     onclick="tab('digital',this)">Digitalizar planilla</div>
+    <div class="cem-tab"     onclick="tab('resumen',this)">Resumen del día</div>
+  </nav>
+
+  <!-- CONN BAR -->
+  <div class="cem-conn">
+    <div class="cem-conn-dot" id="cdot"></div>
+    <div class="cem-conn-txt" id="ctxt">Conectado con <strong>CEM_Comercios_2026</strong> — Google Sheets</div>
+  </div>
+
+  <!-- BODY -->
+  <main class="cem-body">
+
+    <!-- ── TAB CAMPO ── -->
+    <div id="tab-campo" class="tab-content on">
+
+      <div class="cem-alert">
+        <strong>Modo campo — agente relevador</strong>
+        Completá en el momento del relevamiento. Los campos con * son obligatorios. Cada registro se guarda directo en el Sheet.
+      </div>
+
+      <!-- 01 -->
+      <div class="cem-card">
+        <div class="cem-card-head">
+          <span class="cem-card-num">01</span>
+          <span class="cem-card-title">Agente y fecha</span>
+        </div>
+        <div class="cem-card-body">
+          <div class="row2">
+            <div class="f"><label>Inspector actuante <span class="req">*</span></label><input type="text" id="inspector" placeholder="Apellido y nombre" autocomplete="name"></div>
+            <div class="f"><label>Fecha <span class="req">*</span></label><input type="date" id="fecha"></div>
+          </div>
+          <div class="f">
+            <label>Zona / sector <span class="req">*</span></label>
+            <div class="tags" id="zona-tags">
+              <div class="tag" onclick="selTag(this,'zona')">Centro</div>
+              <div class="tag" onclick="selTag(this,'zona')">B° San Antonio</div>
+              <div class="tag" onclick="selTag(this,'zona')">B° Belgrano</div>
+              <div class="tag" onclick="selTag(this,'zona')">B° Progreso</div>
+              <div class="tag" onclick="selTag(this,'zona')">Área costera</div>
+              <div class="tag" onclick="selTag(this,'zona')">Periferia</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 -->
+      <div class="cem-card">
+        <div class="cem-card-head">
+          <span class="cem-card-num">02</span>
+          <span class="cem-card-title">Datos del titular</span>
+        </div>
+        <div class="cem-card-body">
+          <div class="f"><label>Nombre y apellido (titular) <span class="req">*</span></label><input type="text" id="titular" placeholder="Apellido, Nombre" autocomplete="off"></div>
+          <div class="row2">
+            <div class="f fmono"><label>DNI</label><input type="text" id="dni" placeholder="00.000.000" maxlength="11" inputmode="numeric"></div>
+            <div class="f fmono"><label>Teléfono</label><input type="tel" id="tel" placeholder="3777-000000" inputmode="tel"></div>
+          </div>
+          <div class="f"><label>Domicilio del titular</label><input type="text" id="dom" placeholder="Barrio, manzana, casa" autocomplete="off"></div>
+        </div>
+      </div>
+
+      <!-- 03 -->
+      <div class="cem-card">
+        <div class="cem-card-head">
+          <span class="cem-card-num">03</span>
+          <span class="cem-card-title">Datos del comercio</span>
+        </div>
+        <div class="cem-card-body">
+          <div class="f"><label>Nombre de fantasía</label><input type="text" id="fantasia" placeholder="Nombre comercial (si tiene)" autocomplete="off"></div>
+          <div class="f"><label>Dirección del comercio <span class="req">*</span></label><input type="text" id="dirc" placeholder="Calle, número o referencia" autocomplete="off"></div>
+          <div class="f">
+            <label>Rubro <span class="req">*</span></label>
+            <div class="tags" id="rubro-tags">
+              <div class="tag" onclick="selTag(this,'rubro')">Alimentación</div>
+              <div class="tag" onclick="selTag(this,'rubro')">Indumentaria</div>
+              <div class="tag" onclick="selTag(this,'rubro')">Ferretería</div>
+              <div class="tag" onclick="selTag(this,'rubro')">Moto repuesto</div>
+              <div class="tag" onclick="selTag(this,'rubro')">Salud / farmacia</div>
+              <div class="tag" onclick="selTag(this,'rubro')">Gastronómico</div>
+              <div class="tag" onclick="selTag(this,'rubro')">Servicios</div>
+              <div class="tag" onclick="selTag(this,'rubro')">Comercio digital</div>
+              <div class="tag" onclick="selTag(this,'rubro')">Otro</div>
+            </div>
+          </div>
+          <div class="f cond" id="otro-wrap">
+            <label>Especificá el rubro</label>
+            <input type="text" id="rubro-otro" placeholder="Describí el rubro" autocomplete="off">
+          </div>
+          <div class="geo-row">
+            <div class="f">
+              <label>Latitud</label>
+              <input type="text" id="lat" placeholder="–29.xxxxx" inputmode="decimal" style="font-family:var(--font-mono);font-size:13px">
+            </div>
+            <div class="f">
+              <label>Longitud</label>
+              <input type="text" id="lon" placeholder="–59.xxxxx" inputmode="decimal" style="font-family:var(--font-mono);font-size:13px">
+            </div>
+            <button class="gps-btn" onclick="captGPS()" type="button" title="Capturar ubicación GPS">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+              GPS
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 -->
+      <div class="cem-card">
+        <div class="cem-card-head">
+          <span class="cem-card-num">04</span>
+          <span class="cem-card-title">Estado del comercio</span>
+        </div>
+        <div class="cem-card-body">
+          <div class="f">
+            <label>Estado <span class="req">*</span></label>
+            <div class="estado-row">
+              <button class="est-btn" id="b-hab"   onclick="selEst('HAB')"   type="button">✓ Habilitado</button>
+              <button class="est-btn" id="b-nohab" onclick="selEst('NOHAB')" type="button">✗ No habilitado</button>
+              <button class="est-btn" id="b-nd"    onclick="selEst('ND')"    type="button">? Sin datos</button>
+            </div>
+          </div>
+
+          <div class="cond" id="blq-hab">
+            <div class="f">
+              <label>Tipo de habilitación</label>
+              <div class="opciones">
+                <label class="opcion"><input type="radio" name="tipo-hab" value="Municipal"><span>Municipal</span></label>
+                <label class="opcion"><input type="radio" name="tipo-hab" value="Provincial"><span>Provincial</span></label>
+                <label class="opcion"><input type="radio" name="tipo-hab" value="Nacional"><span>Nacional</span></label>
+                <label class="opcion"><input type="radio" name="tipo-hab" value="Múltiple"><span>Múltiple</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="cond" id="blq-nohab">
+            <div class="f" style="margin-bottom:12px">
+              <label>¿Obtuvo alguna vez habilitación?</label>
+              <div class="opciones">
+                <label class="opcion"><input type="radio" name="tuvo-hab" value="Sí"><span>Sí, tuvo habilitación anteriormente</span></label>
+                <label class="opcion"><input type="radio" name="tuvo-hab" value="No"><span>No, nunca tuvo</span></label>
+                <label class="opcion"><input type="radio" name="tuvo-hab" value="No sabe"><span>No sabe / no informa</span></label>
+              </div>
+            </div>
+            <div class="f">
+              <label>Motivo aparente</label>
+              <div class="opciones">
+                <label class="opcion"><input type="checkbox" class="mot"><span>Comercio cerrado al momento del relevamiento</span></label>
+                <label class="opcion"><input type="checkbox" class="mot"><span>Titular ausente</span></label>
+                <label class="opcion"><input type="checkbox" class="mot"><span>Trámite en curso</span></label>
+                <label class="opcion"><input type="checkbox" class="mot"><span>Desconoce la obligación</span></label>
+                <label class="opcion"><input type="checkbox" class="mot"><span>Otro motivo</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 -->
+      <div class="cem-card">
+        <div class="cem-card-head">
+          <span class="cem-card-num">05</span>
+          <span class="cem-card-title">Foto y observaciones</span>
+        </div>
+        <div class="cem-card-body">
+          <div class="f">
+            <label>Foto del local</label>
+            <div class="foto-drop" onclick="document.getElementById('foto-in').click()">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--azul-500)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <p><strong>Tocá para agregar foto</strong> — JPG o PNG, máx. 3</p>
+              <div class="foto-prevs" id="foto-prevs"></div>
+            </div>
+            <input type="file" id="foto-in" accept="image/*" multiple onchange="prevFotos(this)">
+          </div>
+          <div class="f">
+            <label>Observaciones</label>
+            <textarea id="obs" placeholder="Notas: estado del local, referencias, situaciones particulares…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast-ok"><h4>Guardado en el Sheet ✓</h4><span id="tok-txt"></span></div>
+      <div class="toast" id="toast-err"><h4>Error al guardar</h4><span id="terr-txt">No se pudo conectar con Google Sheets. Revisá la conexión e intentá de nuevo.</span></div>
+    </div>
+
+    <!-- ── TAB DIGITAL ── -->
+    <div id="tab-digital" class="tab-content">
+      <div class="cem-alert">
+        <strong>Digitalización — carga desde planilla en papel</strong>
+        Ingresá los datos de cada planilla ya completada en campo. Cada envío va directo al Sheet.
+      </div>
+      <div class="cem-card">
+        <div class="cem-card-head">
+          <span class="cem-card-num">—</span>
+          <span class="cem-card-title">Carga rápida</span>
+        </div>
+        <div class="cem-card-body">
+          <div class="row2">
+            <div class="f"><label>Inspector de planilla</label><input type="text" id="d-insp" placeholder="Nombre del inspector"></div>
+            <div class="f"><label>Fecha de planilla</label><input type="date" id="d-fecha"></div>
+          </div>
+          <div class="row2">
+            <div class="f"><label>Titular</label><input type="text" id="d-tit" placeholder="Apellido, Nombre"></div>
+            <div class="f fmono"><label>DNI</label><input type="text" id="d-dni" placeholder="00.000.000" inputmode="numeric"></div>
+          </div>
+          <div class="row2">
+            <div class="f"><label>Domicilio titular</label><input type="text" id="d-dom" placeholder="Barrio, manzana, casa"></div>
+            <div class="f fmono"><label>Teléfono</label><input type="tel" id="d-tel" placeholder="3777-xxxxxx"></div>
+          </div>
+          <div class="f"><label>Nombre de fantasía</label><input type="text" id="d-fan" placeholder="Nombre comercial"></div>
+          <div class="f"><label>Dirección del comercio</label><input type="text" id="d-dir" placeholder="Calle y número"></div>
+          <div class="row2">
+            <div class="f">
+              <label>Rubro</label>
+              <select id="d-rub">
+                <option value="">— Seleccioná —</option>
+                <option>Alimentación</option><option>Indumentaria</option><option>Ferretería</option>
+                <option>Moto repuesto</option><option>Salud / farmacia</option><option>Gastronómico</option>
+                <option>Servicios</option><option>Comercio digital</option><option>Otro</option>
+              </select>
+            </div>
+            <div class="f fmono"><label>Teléfono comercio</label><input type="tel" id="d-telc" placeholder="3777-xxxxxx"></div>
+          </div>
+          <div class="row2">
+            <div class="f">
+              <label>Estado del comercio</label>
+              <select id="d-est">
+                <option value="">— Seleccioná —</option>
+                <option value="HAB">Habilitado</option>
+                <option value="NOHAB">No habilitado</option>
+                <option value="ND">Sin datos</option>
+              </select>
+            </div>
+            <div class="f">
+              <label>Tipo de habilitación</label>
+              <select id="d-tip">
+                <option value="">— Seleccioná —</option>
+                <option>Municipal</option><option>Provincial</option><option>Nacional</option><option>Múltiple</option>
+              </select>
+            </div>
+          </div>
+          <div class="f">
+            <label>¿Obtuvo alguna vez habilitación?</label>
+            <select id="d-tuvo">
+              <option value="">— Seleccioná —</option>
+              <option>Sí</option><option>No</option><option>No sabe</option>
+            </select>
+          </div>
+          <div class="f">
+            <label>Observaciones</label>
+            <textarea id="d-obs" placeholder="Transcribí el campo de observaciones de la planilla en papel"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="toast" id="d-tok-ok"><h4>Guardado en el Sheet ✓</h4><span id="d-tok-txt"></span></div>
+      <div class="toast" id="d-tok-err"><h4>Error al guardar</h4><span id="d-err-txt"></span></div>
+    </div>
+
+    <!-- ── TAB RESUMEN ── -->
+    <div id="tab-resumen" class="tab-content">
+      <div class="cem-alert">
+        <strong>Resumen del día</strong>
+        Registros guardados en esta sesión. Para el historial completo, abrí el Sheet.
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-lbl">Relevados hoy</div><div class="kpi-val" id="kt">0</div></div>
+        <div class="kpi"><div class="kpi-lbl">Habilitados</div><div class="kpi-val v" id="kh">0</div></div>
+        <div class="kpi"><div class="kpi-lbl">No habilitados</div><div class="kpi-val r" id="kn">0</div></div>
+      </div>
+      <div class="cem-card">
+        <div class="cem-card-head">
+          <span class="cem-card-num">—</span>
+          <span class="cem-card-title">Registros de esta sesión</span>
+        </div>
+        <div class="cem-card-body" id="lista">
+          <div style="text-align:center;padding:20px;color:var(--n-500);font-size:13px">Todavía no hay registros en esta sesión.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="cem-footer">
+    <strong>Centro Estadístico Municipal</strong> · Municipalidad de Esquina, Corrientes · Relevamiento 2026
+  </footer>
+
+  <!-- STICKY BAR -->
+  <div class="cem-bar">
+    <button class="btn-sec" onclick="reset()" type="button">Nuevo</button>
+    <button class="btn-pri" id="btn-g" onclick="guardar()" type="button">
+      <span id="btn-txt">Guardá en el Sheet</span>
+      <div class="spinner" id="spin"></div>
+    </button>
+  </div>
+
+  <script>
+    const SCRIPT = 'https://script.google.com/macros/s/AKfycbxmv36x7FBGlq1mvGdQattDobb4vUPeyqdz7mNqj2H7vEb9KJZTs91HDWi-oIybLvwpFw/exec';
+    let est = '', zona = '', rubro = '', regs = [], tabActual = 'campo';
+
+    // Init fechas
+    document.getElementById('fecha').valueAsDate = new Date();
+    document.getElementById('d-fecha').valueAsDate = new Date();
+
+    // ── TABS ──
+    function tab(id, el) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('on'));
+      document.querySelectorAll('.cem-tab').forEach(t => t.classList.remove('on'));
+      document.getElementById('tab-' + id).classList.add('on');
+      el.classList.add('on');
+      tabActual = id;
+      if (id === 'resumen') renderResumen();
+    }
+
+    // ── TAGS ──
+    function selTag(el, tipo) {
+      const grp = tipo === 'zona' ? 'zona-tags' : 'rubro-tags';
+      document.getElementById(grp).querySelectorAll('.tag').forEach(t => t.classList.remove('on'));
+      el.classList.add('on');
+      if (tipo === 'zona') zona = el.textContent;
+      if (tipo === 'rubro') {
+        rubro = el.textContent;
+        document.getElementById('otro-wrap').classList.toggle('on', el.textContent === 'Otro');
+      }
+    }
+
+    // ── ESTADO ──
+    function selEst(v) {
+      est = v;
+      document.getElementById('b-hab').className   = 'est-btn' + (v === 'HAB'   ? ' est-hab'   : '');
+      document.getElementById('b-nohab').className = 'est-btn' + (v === 'NOHAB' ? ' est-nohab' : '');
+      document.getElementById('b-nd').className    = 'est-btn' + (v === 'ND'    ? ' est-nd'    : '');
+      document.getElementById('blq-hab').classList.toggle('on',   v === 'HAB');
+      document.getElementById('blq-nohab').classList.toggle('on', v === 'NOHAB');
+    }
+
+    // ── GPS ──
+    function captGPS() {
+      const dot = document.getElementById('cdot');
+      const txt = document.getElementById('ctxt');
+      if (!navigator.geolocation) { alert('GPS no disponible en este dispositivo.'); return; }
+      dot.className = 'cem-conn-dot pend';
+      txt.innerHTML = 'Obteniendo ubicación GPS…';
+      navigator.geolocation.getCurrentPosition(
+        p => {
+          document.getElementById('lat').value = p.coords.latitude.toFixed(6);
+          document.getElementById('lon').value = p.coords.longitude.toFixed(6);
+          dot.className = 'cem-conn-dot';
+          txt.innerHTML = 'Conectado con <strong>CEM_Comercios_2026</strong> — Google Sheets';
+        },
+        () => {
+          dot.className = 'cem-conn-dot err';
+          txt.innerHTML = 'No se pudo obtener la ubicación. Verificá los permisos.';
+          setTimeout(() => {
+            dot.className = 'cem-conn-dot';
+            txt.innerHTML = 'Conectado con <strong>CEM_Comercios_2026</strong> — Google Sheets';
+          }, 3000);
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+
+    // ── FOTOS ──
+    function prevFotos(inp) {
+      const pre = document.getElementById('foto-prevs');
+      pre.innerHTML = '';
+      Array.from(inp.files).slice(0, 3).forEach(f => {
+        const r = new FileReader();
+        r.onload = e => {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'foto-thumb';
+          pre.appendChild(img);
+        };
+        r.readAsDataURL(f);
+      });
+    }
+
+    // ── LOADING ──
+    function setLoad(on) {
+      document.getElementById('btn-g').disabled = on;
+      document.getElementById('btn-txt').style.display = on ? 'none' : 'block';
+      document.getElementById('spin').style.display = on ? 'block' : 'none';
+    }
+
+    // ── ENVIAR AL SHEET ──
+    async function enviar(data) {
+      const resp = await fetch(SCRIPT, { method: 'POST', body: JSON.stringify(data) });
+      const json = await resp.json();
+      if (!json.ok) throw new Error(json.error || 'Error desconocido');
+      return json;
+    }
+
+    // ── GUARDAR ──
+    async function guardar() {
+      if (tabActual === 'digital') { await guardarDigital(); return; }
+
+      const inspector = document.getElementById('inspector').value.trim();
+      const titular   = document.getElementById('titular').value.trim();
+      const fecha     = document.getElementById('fecha').value;
+
+      if (!inspector || !titular || !fecha || !est || !zona) {
+        alert('Completá los campos obligatorios:\n• Inspector actuante\n• Fecha\n• Zona / sector\n• Nombre del titular\n• Estado del comercio');
+        return;
+      }
+
+      const rb       = rubro === 'Otro' ? document.getElementById('rubro-otro').value : rubro;
+      const tipoHab  = (document.querySelector('input[name="tipo-hab"]:checked') || {}).value || '';
+      const tuvoHab  = (document.querySelector('input[name="tuvo-hab"]:checked') || {}).value || '';
+      const motivos  = Array.from(document.querySelectorAll('.mot:checked'))
+                         .map(c => c.closest('.opcion').querySelector('span').textContent).join(', ');
+
+      const data = {
+        fecha, inspector, zona, titular, modo: 'campo',
+        dni:        document.getElementById('dni').value,
+        telefono:   document.getElementById('tel').value,
+        domicilio:  document.getElementById('dom').value,
+        fantasia:   document.getElementById('fantasia').value,
+        dirComercio: document.getElementById('dirc').value,
+        rubro: rb, estado: est, tipoHab, tuvoHab, motivos,
+        lat: document.getElementById('lat').value,
+        lon: document.getElementById('lon').value,
+        obs: document.getElementById('obs').value
+      };
+
+      setLoad(true);
+      document.getElementById('toast-ok').className  = 'toast';
+      document.getElementById('toast-err').className = 'toast';
+
+      try {
+        await enviar(data);
+        regs.push({ ...data });
+        const lbl = { HAB: 'Habilitado', NOHAB: 'No habilitado', ND: 'Sin datos' };
+        document.getElementById('tok-txt').textContent = titular + ' · ' + (rb || '—') + ' · ' + lbl[est];
+        document.getElementById('toast-ok').className = 'toast ok';
+        setTimeout(() => { document.getElementById('toast-ok').className = 'toast'; reset(); }, 3000);
+        renderResumen();
+      } catch (e) {
+        document.getElementById('terr-txt').textContent = 'No se pudo guardar: ' + e.message + '. Revisá la conexión.';
+        document.getElementById('toast-err').className = 'toast err';
+      } finally {
+        setLoad(false);
+      }
+    }
+
+    // ── GUARDAR DIGITAL ──
+    async function guardarDigital() {
+      const tit  = document.getElementById('d-tit').value.trim();
+      const insp = document.getElementById('d-insp').value.trim();
+      if (!tit || !insp) { alert('Completá al menos inspector y titular.'); return; }
+
+      const data = {
+        fecha:       document.getElementById('d-fecha').value,
+        inspector:   insp, titular: tit, modo: 'digitalizacion',
+        dni:         document.getElementById('d-dni').value,
+        telefono:    document.getElementById('d-tel').value,
+        domicilio:   document.getElementById('d-dom').value,
+        fantasia:    document.getElementById('d-fan').value,
+        dirComercio: document.getElementById('d-dir').value,
+        rubro:       document.getElementById('d-rub').value,
+        estado:      document.getElementById('d-est').value,
+        tipoHab:     document.getElementById('d-tip').value,
+        tuvoHab:     document.getElementById('d-tuvo').value,
+        obs:         document.getElementById('d-obs').value
+      };
+
+      setLoad(true);
+      document.getElementById('d-tok-ok').className  = 'toast';
+      document.getElementById('d-tok-err').className = 'toast';
+
+      try {
+        await enviar(data);
+        regs.push({ ...data });
+        document.getElementById('d-tok-txt').textContent = tit + ' · ' + (data.rubro || '—');
+        document.getElementById('d-tok-ok').className = 'toast ok';
+        setTimeout(() => {
+          document.getElementById('d-tok-ok').className = 'toast';
+          ['d-tit','d-dni','d-tel','d-dom','d-fan','d-dir','d-obs'].forEach(id => document.getElementById(id).value = '');
+          ['d-rub','d-est','d-tip','d-tuvo'].forEach(id => document.getElementById(id).value = '');
+          document.getElementById('d-fecha').valueAsDate = new Date();
+        }, 2500);
+        renderResumen();
+      } catch (e) {
+        document.getElementById('d-err-txt').textContent = 'No se pudo guardar: ' + e.message;
+        document.getElementById('d-tok-err').className = 'toast err';
+      } finally {
+        setLoad(false);
+      }
+    }
+
+    // ── RESET ──
+    function reset() {
+      est = ''; zona = ''; rubro = '';
+      ['inspector','titular','dni','tel','dom','fantasia','dirc','lat','lon','obs'].forEach(id => {
+        const e = document.getElementById(id); if (e) e.value = '';
+      });
+      document.getElementById('fecha').valueAsDate = new Date();
+      ['b-hab','b-nohab','b-nd'].forEach(id => document.getElementById(id).className = 'est-btn');
+      document.getElementById('blq-hab').classList.remove('on');
+      document.getElementById('blq-nohab').classList.remove('on');
+      document.getElementById('otro-wrap').classList.remove('on');
+      document.getElementById('foto-prevs').innerHTML = '';
+      document.querySelectorAll('.tag').forEach(t => t.classList.remove('on'));
+      document.querySelectorAll('input[name="tipo-hab"],input[name="tuvo-hab"]').forEach(r => r.checked = false);
+      document.querySelectorAll('.mot').forEach(c => c.checked = false);
+      document.getElementById('toast-ok').className  = 'toast';
+      document.getElementById('toast-err').className = 'toast';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── RESUMEN ──
+    function renderResumen() {
+      const hoy = new Date().toISOString().split('T')[0];
+      const hr  = regs.filter(r => r.fecha === hoy);
+      document.getElementById('kt').textContent = hr.length;
+      document.getElementById('kh').textContent = hr.filter(r => r.estado === 'HAB').length;
+      document.getElementById('kn').textContent = hr.filter(r => r.estado === 'NOHAB').length;
+
+      const lista = document.getElementById('lista');
+      if (!regs.length) {
+        lista.innerHTML = '<div style="text-align:center;padding:20px;color:var(--n-500);font-size:13px">Todavía no hay registros en esta sesión.</div>';
+        return;
+      }
+      lista.innerHTML = [...regs].reverse().map(r => {
+        const bc = r.estado === 'HAB' ? 'b-hab' : r.estado === 'NOHAB' ? 'b-nohab' : 'b-nd';
+        const bl = r.estado === 'HAB' ? 'Habilitado' : r.estado === 'NOHAB' ? 'No habilitado' : 'Sin datos';
+        const papel = r.modo === 'digitalizacion' ? `<span class="badge b-papel">planilla</span>` : '';
+        return `<div class="reg">
+          <div>
+            <div class="reg-nom">${r.titular}${papel}</div>
+            <div class="reg-det">${r.rubro || '—'} · ${r.zona || r.inspector} · ${r.fecha}</div>
+          </div>
+          <span class="badge ${bc}">${bl}</span>
+        </div>`;
+      }).join('');
+    }
+  </script>
+</body>
+</html>
